@@ -1,0 +1,6 @@
+{
+  "markdown.marp.themes": [
+    "./themes/mytheme.css"
+  ],
+  "python-envs.defaultEnvManager": "ms-python.python:system",
+}
