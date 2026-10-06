@@ -787,7 +787,7 @@ def partition(data: list[int], left:int, right:int) -> int:
     return left
 ```
 ---
-<!-- _class: content-image-right content-50 -->
+<!-- _class: content-image-right content-40 -->
 # クイックソートの計算量
 
 平均計算量は$O(n\log n)$
@@ -1008,7 +1008,7 @@ CPython（Pythonのリファレンス実装）で使われているアルゴリ�
 一番シンプルな探索
 
 ---
-# 実装 | 線形探索
+# 線形探索の実装
 
 リスト内にデータがあれば、そのインデックス。なければ`None`を返す。
 
@@ -1038,7 +1038,7 @@ def linear_search(data: list[int], key: int) -> int | None:
 
 ---
 <!-- _class: content-image-right content-60 -->
-# 二分探索 | 動作
+# 二分探索の動作
 
 ![w:600px](images/binary_search.drawio.svg)
 
@@ -1052,7 +1052,7 @@ def linear_search(data: list[int], key: int) -> int | None:
 5. 見つからなければNoneを返す
 
 ---
-# 二分探索 | 実装
+# 二分探索の実装
 
 ```python
 def binary_search(data: list[int], key:int) -> int | None:
@@ -1310,7 +1310,6 @@ if 3 in a:
 
 例えば
 - グラフ上の座標
-- 複素数（Pythonには組み込みの`complex`型もある）
 - ベクトル
 - 住所録のエントリ（氏名, 住所, 電話番号, ...）
 - ステータス（HP, MP, STR, DEX, ...）
@@ -1497,7 +1496,7 @@ Pythonでは、list や dictも関数内で変更すると関数外にも反映�
 </div>
 
 ---
-# 参考 | intやfloatでは値が変更されない
+# [参考] intやfloatでは値が変更されない
 
 `int`や`float`の値自体は変更できない。引数`a`への再代入は、呼び出し元の変数`x`には影響しない
 
@@ -1592,7 +1591,7 @@ def main():
 LIFO (Last In, First Out) とも呼ぶ
 
 ---
-# スタック | 実装 
+# スタックの実装 
 
 定義
   - top : 次に格納する位置（格納済みの要素数）を示す。初期値は0
@@ -1611,7 +1610,7 @@ def main():
     stack : Stack = Stack([0] * 10)
 ```
 ---
-# スタック | 実装 | Push
+# Push
 
 `top`の位置に値を入れる。
 もし、dataがいっぱいなら `False`を返す
@@ -1625,7 +1624,7 @@ def push(stack: Stack, value: int) -> bool:
     return True
 ```
 ---
-# スタック | 実装 | Pop
+# Pop
 
 `top`を1減らし、その位置の値を取り出して返す
 スタックが空なら`None`を返す
@@ -1688,7 +1687,7 @@ $O(n)$の処理が必要となる
   - キューに入っているデータの数
 
 ---
-# キュー | 実装
+# キューの実装
 
 定義  
 ```python
@@ -1707,7 +1706,7 @@ def main():
 ```
 
 ---
-# キュー | 実装 | enqueue
+# enqueue
 
 `tail`の位置にデータを入れる
 もし、キューがいっぱいなら `False`を返す
@@ -1724,7 +1723,7 @@ def enqueue(queue: Queue, value: int) -> bool:
 ```
 
 ---
-# キュー | 実装 | dequeue
+# dequeue
 
 `head`の位置のデータを取り出して返す
 もし、データがないなら `None`を返す
@@ -2081,7 +2080,7 @@ def remove(lst: LinkedList, index: int) -> bool:
 ---
 # キュー / スタックとの関係
 
-キューとスタックの追加・取り出し操作を、いずれも$O(1)$で実装可能
+単方向のLinked Listでもキューとスタックの追加・取り出し操作を、いずれも$O(1)$で実装可能
 
 |Linked List| Queue | Stack |
 |:---:|:---:|:---:|
@@ -2096,14 +2095,32 @@ Python組み込みのリストと、本資料の単方向連結リスト（tail�
 | | list | Linked List |
 |:---:|:---:|:---:|
 |**先頭に挿入**| $O(n)$ | $O(1)$ |
-|末尾に挿入| $O(1)$（償却） | $O(1)$ |
+|末尾に挿入| $O(1)$（Amortized） | $O(1)$ |
 |途中に挿入| $O(n)$ | $O(n)$ |
 |**先頭を削除**| $O(n)$ | $O(1)$ |
 |途中を削除| $O(n)$ | $O(n)$ |
-|末尾を削除| $O(1)$（償却） | $O(n)$ |
+|末尾を削除| $O(1)$（Amortized） | $O(n)$ |
 |**ランダムアクセス**| $O(1)$ | $O(n)$ |
 
 ---
+# [参考] 償却計算量（Amortized）とは
+
+一連の操作の合計コストを、操作回数で割って評価する考え方
+
+例：空の動的配列（`list`）への末尾追加
+※ 満杯になると容量を2倍に増やす場合
+
+|状態|必要な処理|1回の計算量|
+|---|---|---|
+|空きがある| 新しい要素を書き込む | $O(1)$ |
+|満杯| 容量を増やし、既存の要素をコピーする | $O(n)$ |
+
+$n$回の追加で、コピーする要素数の合計は $1 + 2 + 4 + \cdots < 2n$
+
+書き込みも含めた合計は$O(n)$なので、1回あたり Amortized $O(1)$
+
+---
+
 <!-- _class: lead -->
 <!-- header: "データ構造 | 二分木" -->
 
